@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>الطلبات</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f5f5f5;
+  padding:20px;
+}
+h2{
+  color:#131921;
+  text-align:center;
+  margin-bottom:20px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+th, td{
+  padding:12px;
+  border-bottom:1px solid #ddd;
+  text-align:center;
+}
+th{
+  background:#131921;
+  color:white;
+}
+tr:hover{
+  background:#f0f0f0;
+}
+</style>
+</head>
+<body>
+
+<h2>جميع الطلبات</h2>
+<table>
+  <thead>
+    <tr>
+      <th>UID المستخدم</th>
+      <th>الاسم</th>
+      <th>اللقب</th>
+      <th>رقم هاتف</th>
+      <th>المدينة</th>
+      <th>البلدة</th>
+      <th>المجموع (DA)</th>
+      <th>آخر 4 أرقام البطاقة</th>
+      <th>التاريخ</th>
+    </tr>
+  </thead>
+  <tbody id="ordersBody">
+  </tbody>
+</table>
+
+<script>
+const db = firebase.database();
+const ordersBody = document.getElementById("ordersBody");
+
+db.ref("orders").on("value", snapshot=>{
+  ordersBody.innerHTML = ""; // إعادة تحميل كل الطلبات
+  snapshot.forEach(orderSnap=>{
+    const order = orderSnap.val();
+    const date = new Date(order.date).toLocaleString("ar-DZ");
+    const {fname,lname,address,city,town} = order.customer;
+
+    ordersBody.innerHTML += `
+      <tr>
+        <td>${order.user || "-"}</td>
+        <td>${fname}</td>
+        <td>${lname}</td>
+        <td>${address}</td>
+        <td>${city}</td>
+        <td>${town}</td>
+        <td>${order.total}</td>
+        <td>${order.cardUsed}</td>
+        <td>${date}</td>
+      </tr>
+    `;
+  });
+});
+</script>
+
+</body>
+</html>

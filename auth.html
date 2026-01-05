@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>تسجيل الدخول</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+
+<style>
+body{background:#131921;color:white;display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial}
+.box{background:#232f3e;padding:20px;width:300px;border-radius:8px}
+input,button{width:100%;padding:10px;margin:8px 0}
+button{background:#f0c14b;border:none;cursor:pointer}
+a{color:#f0c14b;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h3>تسجيل الدخول</h3>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="كلمة السر">
+<button onclick="login()">دخول</button>
+
+<hr>
+<button onclick="register()">إنشاء حساب</button>
+<p><a onclick="resetPassword()">نسيت كلمة السر؟</a></p>
+</div>
+
+<script src="auth.js"></script>
+</body>
+</html>

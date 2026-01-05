@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>صفحة المنتج</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  margin:0;
+  padding:20px;
+  display:flex;
+  justify-content:center;
+}
+.product-box{
+  background:white;
+  border-radius:12px;
+  padding:25px;
+  max-width:600px;
+  width:100%;
+  box-shadow:0 6px 20px rgba(0,0,0,0.15);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.product-box img{
+  width:100%;
+  max-width:350px;
+  border-radius:10px;
+  transition: transform 0.3s;
+}
+.product-box img:hover{
+  transform: scale(1.05);
+}
+h2{
+  margin:15px 0 5px 0;
+  color:#131921;
+}
+#price{
+  color:#b12704;
+  font-weight:bold;
+  font-size:22px;
+  margin-bottom:15px;
+}
+#desc{
+  font-size:16px;
+  color:#555;
+  margin-bottom:20px;
+  text-align:center;
+}
+.quantity{
+  display:flex;
+  align-items:center;
+  margin-bottom:20px;
+}
+.quantity input{
+  width:60px;
+  text-align:center;
+  font-size:16px;
+  padding:5px;
+  border-radius:5px;
+  border:1px solid #ccc;
+  margin-left:10px;
+}
+#cartBtn{
+  background:#f0c14b;
+  border:none;
+  padding:12px 25px;
+  font-size:16px;
+  border-radius:8px;
+  cursor:pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+#cartBtn:hover{
+  background:#e2b33b;
+  transform: translateY(-2px);
+}
+</style>
+</head>
+<body>
+
+<div class="product-box">
+  <img id="img" src="">
+  <h2 id="name"></h2>
+  <h3 id="price"></h3>
+  <p id="desc"></p>
+
+  <div class="quantity">
+    <label for="qty">الكمية:</label>
+    <input type="number" id="qty" value="1" min="1">
+  </div>
+
+  <button id="cartBtn">🛒 أضف للسلة</button>
+</div>
+
+<script>
+const id = new URLSearchParams(window.location.search).get("id");
+const db = firebase.database();
+
+db.ref("products/"+id).once("value").then(snap=>{
+  const p = snap.val();
+  document.getElementById("img").src = p.image;
+  document.getElementById("name").innerText = p.name;
+  document.getElementById("desc").innerText = p.description;
+  document.getElementById("price").innerText = p.price + " DA";
+
+  document.getElementById("cartBtn").onclick = ()=>{ 
+    let cart = JSON.parse(localStorage.getItem("cart"))||[];
+    const qty = parseInt(document.getElementById("qty").value) || 1;
+
+    for(let i=0;i<qty;i++){
+      cart.push(id);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(`تم إضافة ${qty} منتج(ات) إلى السلة`);
+  };
+});
+</script>
+
+</body>
+</html>

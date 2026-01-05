@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>سلة المشتريات</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+<style>
+body{font-family:Arial;background:#f5f5f5;padding:20px}
+h2{color:#131921}
+.cart-item{background:white;padding:15px;border-radius:8px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+button{background:#f0c14b;border:none;padding:6px 10px;border-radius:5px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<h2>سلة مشترياتك</h2>
+<div id="cart"></div>
+<button onclick="checkout()">💳 الدفع الآن</button>
+
+<script>
+const db = firebase.database();
+const cartDiv = document.getElementById("cart");
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function loadCart() {
+  cartDiv.innerHTML = "";
+  cart.forEach((id,index)=>{
+    db.ref("products/"+id).once("value").then(snap=>{
+      const p = snap.val();
+      cartDiv.innerHTML += `
+        <div class="cart-item">
+          <span>${p.name} - ${p.price} DA</span>
+          <button onclick="removeItem(${index})">حذف</button>
+        </div>`;
+    });
+  });
+}
+
+function removeItem(index) {
+  cart.splice(index,1);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  loadCart();
+}
+
+function checkout() {
+  if(cart.length===0){ alert("السلة فارغة!"); return; }
+  window.location = "checkout.html";
+}
+
+loadCart();
+</script>
+</body>
+</html>
